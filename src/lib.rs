@@ -6,18 +6,15 @@ struct Node {
 struct LinkedList {
     head: Link,
 }
-enum Link {
-    Empty,
-    NonEmpty(Box<Node>),
-}
+type Link = Option<Box<Node>>;
 #[cfg(test)]
 mod tests {
     use super::*;
     #[test]
     fn it_works() {
-        let list = Link::NonEmpty(Box::new(Node {
+        let list = Link::Some(Box::new(Node {
             element: 103,
-            next: Link::Empty,
+            next: Link::None,
         }));
     }
 }
