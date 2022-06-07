@@ -1,5 +1,5 @@
-type Link = Option<Box<Node>>;
-struct Node {
+pub type Link = Option<Box<Node>>;
+pub struct Node {
     element: u32,
     next: Link,
 }
@@ -11,21 +11,38 @@ impl LinkedList {
     fn empty() -> LinkedList {
         LinkedList { head: None }
     }
-    fn push(&mut self, element: u32) {
-        match self.head {
-            None => {
-                self.head = Some(Box::new(Node {
-                    element,
-                    next: None,
-                }))
-            }
+    pub fn push(&mut self, element: u32) {
+        let old_head = self.head.take();
+        let new_head = Box::new(Node {
+            element,
+            next: old_head,
+        });
+        self.head = Some(new_head);
+        //Below solution let to the above
+        // match self.head {
+        //     None => {
+        //         self.head = Some(Box::new(Node {
+        //             element,
+        //             next: None,
+        //         }))
+        //     }
+        //     Some(n) => {
+        //         let new_head = Some(Box::new(Node {
+        //             element,
+        //             next: Some(n),
+        //         }));
+        //         self.head = new_head;
+        //     }
+        // }
+    }
+    pub fn pop(&mut self) -> Option<u32> {
+        let old_head = self.head.take();
+        match old_head {
             Some(n) => {
-                let new_head = Some(Box::new(Node {
-                    element,
-                    next: Some(n),
-                }));
-                self.head = new_head;
+                self.head = n.next;
+                Some(n.element)
             }
+            None => None,
         }
     }
 }
@@ -37,5 +54,7 @@ mod tests {
     fn it_works() {
         let mut list = LinkedList::empty();
         list.push(39);
+        list.push(67);
+        list.pop();
     }
 }
