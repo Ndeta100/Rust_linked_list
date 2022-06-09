@@ -1,3 +1,5 @@
+use std::os::macos;
+
 pub type Link = Option<Box<Node>>;
 pub struct Node {
     element: u32,
@@ -45,6 +47,7 @@ impl LinkedList {
             None => None,
         }
     }
+    fn peek(&mut self) -> Option<&u32> {}
 }
 
 #[cfg(test)]
